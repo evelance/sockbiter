@@ -306,7 +306,7 @@ static struct ms_conn* ms_create_conns(char* msgbuf, size_t msglen, const char* 
         /* Open output file to record responses */
         if (! ignore_out) {
             snprintf(conn->out_file, sizeof conn->out_file, out_file_fmt, (int)(i + 1));
-            if ((conn->fd_out = open(conn->out_file, O_WRONLY|O_CREAT|O_TRUNC)) < 0) {
+            if ((conn->fd_out = open(conn->out_file, O_WRONLY|O_CREAT|O_TRUNC, 0666)) < 0) {
                 snprintf(msgbuf, msglen, "Cannot open output file '%s': %s",
                     conn->out_file, strerror(errno));
                 goto failed;

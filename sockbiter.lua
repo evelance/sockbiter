@@ -5,6 +5,7 @@ local argc, argv = ...
 local help = [=[
 sockbiter - HTTP/1.1 load generator and server analyzer
 Usage: sockbiter [options] http://hostname[:port][/path]
+
 Options:
     -c conns         Number of parallel connections.
     -n requests      Number of requests to perform for each connection.
@@ -18,6 +19,7 @@ Options:
     -no-perconn      Do not show per-connection details.
     -no-timings      Do not show timing table.
     -no-summary      Do not show summary.
+
 Timing diagram explanation:
     Waiting for connect()
     |     connect() succeeded
