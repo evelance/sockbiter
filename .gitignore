@@ -1,0 +1,8 @@
+lua-5.4.3-no-doc/src/*.o
+lua-5.4.3-no-doc/src/*.a
+lua-5.4.3-no-doc/src/*.so
+lua-5.4.3-no-doc/src/lua
+lua-5.4.3-no-doc/src/luac
+responses-*.txt
+requests.txt
+sockbiter
