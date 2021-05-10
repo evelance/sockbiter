@@ -231,7 +231,7 @@ static void* ms_receiver_thread(struct ms_conn* conn)
                     return NULL;
                 }
                 rlen -= wlen;
-		now += wlen;
+                now += wlen;
             }
         }
     }
