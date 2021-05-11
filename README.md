@@ -5,6 +5,8 @@ The goal of this program is to benchmark the raw request-processing capabilities
 of an HTTP server. It is intended to run on the same machine as the server, but
 can also be used over the network.
 
+## How it works
+
 It works by generating a file containing many HTTP requests (requests.txt),
 opening one or more connections to the target server, and then using blocking
 sendfile() operations to send the requests while using as little CPU as possible.
@@ -15,7 +17,7 @@ it is planned, responses are not parsed for now.
 For each connection, two threads are started that mostly block on I/O and record timestamps
 when their operations are finished.
 
-The timestamps are used to generate an extensive summary with requests per second, throughput,
+The timestamps are used for an extensive summary with requests per second, throughput,
 and a connection timing table to gain insight into the threading model of the server.
 
 ## Command-line usage and options
@@ -49,19 +51,48 @@ Timing diagram explanation:
 
 ## Sample outputs
 
-Bechmarking my own website (Apache2, only redirects to HTTPS)
+Benchmarking Python's standard library http.server, "hello world" BaseHTTPRequestHandler, on localhost
 ```
-./sockbiter -c 16 -n 100 -human -no-perconn http://evelance.de/
-------- Sample request -------
-GET / HTTP/1.1
-Host: evelance.de:80
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
-Accept-Language: en-US,en;q=0.5
-Accept-Encoding: gzip, deflate
-Upgrade-Insecure-Requests: 1
-Connection: close
+./sockbiter -c 8 -n 10000 -human -no-sample -no-perconn http://localhost:1234
+Generating input file with 10000 requests..
 
+---------- Benchmark ---------
+Benchmarking localhost:1234
+ * Parallel connections: 8
+ * Requests/connection:  10000
+Waiting for completion...
+Benchmark successful, 4.71 sec
+
+-------- Timing table --------
+Duration: 4.70 sec, 96.00 ms per column.
+#7 [*X<<<<|...........................................] 1
+#8 [*XXXXXXX<<<<|.....................................] 2
+#3 [*XXXXXXXXXXXXX<<<<|...............................] 3
+#1 [*XXXXXXXXXXXXXXXXXXX<<<<|.........................] 4
+#4 [*XXXXXXXXXXXXXXXXXXXXXXXXX<<<<|...................] 5
+#5 [*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<<<<|.............] 6
+#2 [*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<<<<|.......] 7
+#6 [*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<<<<|] 8
+
+----------- Summary ----------
+Successful connections: 8 out of 8 (0 failed).
+Total bytes sent . . . . .        24.80 MB
+Total bytes received . . .        11.75 MB
+Benchmark duration . . . .         4.70 sec
+Send throughput  . . . . .         5.27 MB/sec
+Receive throughput . . . .         2.50 MB/sec
+Aggregate req/second . . .        17.01 K
+Longest connection . . . .         4.70 sec (#6)
+Average connection . . . .         2.64 sec
+Shortest connection  . . .       586.09 ms (#7)
+Longest connect()  . . . .       718.71 us (#6)
+Average connect()  . . . .       611.68 us
+Shortest connect() . . . .       465.62 us (#7)
+```
+
+Bechmarking my personal website (Apache2, only redirects to HTTPS), using the Internet
+```
+./sockbiter -c 16 -n 100 -human -no-perconn -no-sample http://evelance.de/
 Generating input file with 100 requests..
 
 ---------- Benchmark ---------
@@ -105,7 +136,8 @@ Longest connect()  . . . .        47.22 ms (#13)
 Average connect()  . . . .        39.22 ms
 Shortest connect() . . . .        25.62 ms (#3)
 ```
-Example of different timings obtained by benchmarking Google (redirects)
+
+Benchmarking Google, using the Internet
 ```
 ./sockbiter -c 16 -n 100 -human -no-sample -no-perconn http://google.de/
 Generating input file with 100 requests..
