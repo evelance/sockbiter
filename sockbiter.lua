@@ -225,7 +225,7 @@ for i = 1, options.nreq do
     end
 end
 f:close()
-os.execute("rm responses-*.txt")
+os.execute("rm -f responses-*.txt")
 print("")
 
 -- Run benchmark
