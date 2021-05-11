@@ -29,12 +29,12 @@ Options:
                      store responses without introducing delays.
     -shutwr          Half-close connection after all data has been sent.
                      This can cause problems with some servers.
-    -human, -h       Use human-readable number formats to print results.
+    -human           Use human-readable number formats to print results.
     -no-sample       Do not show sample request.
     -no-perconn      Do not show per-connection details.
     -no-timings      Do not show timing table.
     -no-summary      Do not show summary.
-    
+
 Timing diagram explanation:
     Waiting for connect()
     |     connect() succeeded
@@ -42,7 +42,7 @@ Timing diagram explanation:
     |     | |  Sending and receiving       Connection closed
     |     | |  |    Receiving only         |    Waiting for other threads
     |     | |  |    |                      |    |
-[.........*>>>XXX<<<<<<<<<<<<<<<<<<<<<<<<<<|...........]
+[.........*>>>XXX<<<<<<<<<<<<<<<<<<<<<<<<<<|...........]]=]
 ```
 
 ## Sample outputs

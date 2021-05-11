@@ -14,7 +14,7 @@ Options:
                      store responses without introducing delays.
     -shutwr          Half-close connection after all data has been sent.
                      This can cause problems with some servers.
-    -human, -h       Use human-readable number formats to print results.
+    -human           Use human-readable number formats to print results.
     -no-sample       Do not show sample request.
     -no-perconn      Do not show per-connection details.
     -no-timings      Do not show timing table.
@@ -69,7 +69,7 @@ for i = 1, argc - 1 do
             options.nocheck = true
         elseif op == "shutwr" then
             options.shutwr = true
-        elseif op == "human" or op == "h" then
+        elseif op == "human" then
             options.human = true
         elseif op == "no-sample" then
             options.show_sample = false
@@ -353,6 +353,12 @@ if options.show_conndetails then
     print("")
 end
 
+-- Timing table and summary only work when there were successful connections
+if valid_entries <= 0 then
+    print("No connection was successful.")
+    return 1
+end
+
 -- Timing table to compare the different connections start/duration/end
 if options.show_timings then
     print("-------- Timing table --------")
@@ -398,10 +404,6 @@ if options.show_timings then
 end
 
 -- Summary of entire benchmark
-if valid_entries <= 0 then
-    print("No connection was successful.")
-    return 1
-end
 if options.show_summary then
     print("----------- Summary ----------")
     local benchmark_duration = last_receive_end - earliest_connect_start
