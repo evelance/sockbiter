@@ -9,6 +9,8 @@ It works by generating a file containing many HTTP requests (requests.txt),
 opening one or more connections to the target server, and then using blocking
 sendfile() operations to send the requests while using as little CPU as possible.
 Responses are recorded into a file per connection (responses-<connection ID>.txt).
+The server may need to be configured to allow many keep-alive requests. Although
+it is planned, responses are not parsed for now.
 
 For each connection, two threads are started that mostly block on I/O and record timestamps
 when their operations are finished.
